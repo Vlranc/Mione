@@ -153,11 +153,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         }
 
 
-        //Value : Function
 
-
-
-            //Value : Function or range END
+           //Value : Function or range END
            if (strcmp(CASES[i].ObjName,"end") == 0)
            {
 
@@ -166,13 +163,16 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                {
                    Paired = 5;
 
+                   int MioObjSize = 0;
+                   MioneObj * MioObj = CMO(Area,AreaSize,NULL,NULL,&MioObjSize);
+
                    AreaObj eArea = (AreaObj){
-                       .Area =Area,
-                       .Size = AreaSize,
-                       .Index = i+1-AreaSize
+                       .Area =MioObj,
+                       .Size = MioObjSize,
+                       .Index = MIONESIZE
                    };
 
-                   printf("zzz %d \n",AreaSize);
+                   printf("area start at %d , size %d \n",eArea.Index,AreaSize);
 
 
                    ValueObj Value = (ValueObj){
@@ -201,8 +201,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                    AreaSize++;
                    Area = realloc(Area,AreaSize*sizeof(CaseObj));
                    Area[AreaSize-1] = CASES[i];
-
-
                }
            }else
            {
@@ -217,6 +215,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
            }
 
+           //Value : Function
            if (strcmp(CASES[i].ObjName,"function") == 0)
            {
                ChildCount++;
@@ -291,8 +290,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 break;
             }
 
-
-
             if (NewVar)
             {
                 Variable = (VariableObj){
@@ -313,116 +310,15 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             };
         };
 
-
-
-
-
         if (!ChildCount) //一班執行的子項內容
         {
-
         }
-
-
-
-
         LastPaired = Paired;
        }
     }
-
-
-
-/*
-    int Size = 0;
-    MioneObj** A = malloc(0);
-    int* ASize = malloc(0);
-
-    Size++;
-    A = realloc(A,Size*sizeof(MioneObj));
-    A[Size-1] = MIONE;
-    ASize = realloc(ASize,Size*sizeof(int));
-    ASize[Size-1] = MIONESIZE;
-
-    for (int Index = 0; Index < Size; Index++)
-    {
-         for (int j = 0; j < 10; j++) printf("\033[1;37;41m LEVEL %d \033[0m",Index);
-         printf("\n");
-
-
-         char  string[] = {' '};
-        for (int i = 0; i < ASize[Index]; i++)
-        {
-            printf("\033[0m %x :",i);
-            if (A[Index][i].ObjType == 5)
-            {
-                printf("%s\033[1;37;42m VALUE \033[0m",string);
-                switch (A[Index][i].Area.ValueType)
-                {
-                case 1:
-
-                    printf("\033[1;37;45m String \033[0m : \033[1;34;47m %s \033[0m\n",A[Index][i].Area.String);
-                    break;
-                case 2:
-                    printf("\033[1;37;45m NPNumber \033[0m : \033[1;34;47m %d \033[0m\n",A[Index][i].Area.NPNumber);
-                    break;
-                case 3:
-                    printf("\033[1;37;45m PNumber \033[0m : \033[1;34;47m %Lf \033[0m\n",A[Index][i].Area.PNumber);
-                    break;
-                case 4:
-                    printf("\033[1;37;45m Function \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Area.Area);
-
-                    Size++;
-                    A = realloc(A,Size*sizeof(MioneObj));
-                    A[Size-1] = A[Index][i].Area.Area.Area;
-                    ASize = realloc(ASize,Size*sizeof(int));
-                    ASize[Size-1] = A[Index][i].Area.Area.Size;
-
-                    break;
-                case 5:
-                    printf("\033[1;37;45m Range \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Area.Area);
-
-                    Size++;
-                    A = realloc(A,Size*sizeof(MioneObj));
-                    A[Size-1] = A[Index][i].Area.Area.Area;
-                    ASize = realloc(ASize,Size*sizeof(int));
-                    ASize[Size-1] = A[Index][i].Area.Area.Size;
-
-                    break;
-                case 6:
-                    printf("\033[1;37;45m Table \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Table.Table);
-                    break;
-                }
-                printf( "");
-            }else
-
-               switch (A[Index][i].ObjType)
-               {
-                     case 1:
-                         printf("%s\033[1;37;42m HEAD \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
-                         break;
-                     case 2:
-                         printf("%s\033[1;37;42m PROMPT \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
-                         break;
-                     case 3:
-                         printf("%s\033[1;37;42m SYMBOL \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
-                         break;
-                     case 4:
-                         printf("%s\033[1;37;42m VARIABLE \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Var.Name);
-                      break;
-               }
-        }
-
-    }
-
-*/
-
     (*SIZE) = (MIONESIZE);
-
     return MIONE;
-
-
-
-
-}      
+}
 
 
 

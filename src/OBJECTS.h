@@ -12,6 +12,9 @@ typedef struct _TableObject;
 typedef struct _HeadObject;
 typedef struct _PairObject;
 typedef struct _SymbolObject;
+typedef struct _ValueReturnObject;
+typedef struct _HeadReturnObject;
+
 
 #define HEAD 1
 #define PROMPT 2
@@ -25,7 +28,7 @@ typedef struct _SymbolObject;
 typedef struct _AreaObject
 {
     int Size; //值大小
-    struct _CaseObject * Area;//給於函數(function)或者執行式(range)。
+    struct _MioneObject * Area;//給於函數(function)或者執行式(range)。
     int Index; //開頭位置
 }AreaObj;
 
@@ -121,7 +124,7 @@ typedef struct _CaseObject
 
 typedef struct _HeadFucObject
 {
-    int (*Fuc)(struct _PairObject*Pairs,int PairsSize);
+    struct _HeadReturnObject (*Fuc)(struct _PairObject*Pairs,int PairsSize);
     char * Name;
 } HeadFucObj;
 
@@ -150,8 +153,26 @@ typedef struct _CountObject
 {
     ValueObj* Value;
     int ValueSize;
-
 } CountObj;
+
+typedef struct _ValueReturnObject
+{
+    ValueObj* Value;
+    int ValueSize;
+} ValueReturnObj;
+
+typedef struct _HeadReturnObject
+{
+    int ToState;/*
+        0:正常
+        1:回傳
+        2:無用回傳
+    */
+
+    ValueReturnObj Vs;
+    int Useless;
+
+} HeadReturnObj;
 
 
 

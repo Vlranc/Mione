@@ -95,17 +95,8 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 {
 
 
-                                    int MioObjSize = 0;
-
-                                    MioneObj * MioObj = CMO(Pack[FirstBracketIndex - 1].Var.V.Area.Area,Pack[FirstBracketIndex - 1].Var.V.Area.Size,NULL,NULL,&MioObjSize);
-
-                                    int ButterIndex = WorkOnMioIndex;
-                                    WorkOnMioIndex = Pack[FirstBracketIndex - 1].Var.V.Area.Index;
-                                    mione( MioObj, MioObjSize);
-
-
-                                    //todo function call
-                                    WorkOnMioIndex = ButterIndex;
+                                  printf("errr I didnt expect this to happen");
+                                    exit(99);
                                 }
                                 else
                                 {
@@ -130,15 +121,62 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                 if (Pack[FirstBracketIndex - 1].Val.ValueType == 4)
                                 {
-
-
-
-                                    int MioObjSize = 0;
-                                    MioneObj * MioObj = CMO(Pack[FirstBracketIndex - 1].Val.Area.Area,Pack[FirstBracketIndex - 1].Val.Area.Size,NULL,NULL,&MioObjSize);
-
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Val.Area.Index;
-                                    mione( MioObj, MioObjSize);
+                                    ValueReturnObj V = Function( Pack[FirstBracketIndex - 1].Val.Area.Area, Pack[FirstBracketIndex - 1].Val.Area.Size);
+
+                                    MioneObj* NewPack = malloc(0);
+                                    int NewPackSize = 0;
+
+                                    for (int index = 0; index < FirstBracketIndex-1; index++)
+                                    {
+                                        printf("added 1\n");
+                                        NewPackSize++;
+                                        NewPack = realloc(NewPack, sizeof(MioneObj) * (NewPackSize));
+                                        NewPack[NewPackSize - 1] = Pack[index];
+                                    }
+
+                                    printf("sizoe of fuc returned : %d\n",V.ValueSize);
+
+                                    if (V.ValueSize)
+                                    {
+                                        for (int index = 0; index < V.ValueSize; index++)
+                                        {
+                                            NewPackSize++;
+                                            NewPack = realloc(NewPack, sizeof(MioneObj) * (NewPackSize));
+                                            NewPack[NewPackSize - 1] = (MioneObj){
+                                                .ObjType = 5,
+                                                .Val = V.Value[index]
+                                            };
+                                        }
+
+                                    } else
+                                    {
+                                        NewPackSize++;
+                                        NewPack = realloc(NewPack, sizeof(MioneObj) * (NewPackSize));
+                                        NewPack[NewPackSize - 1] = (MioneObj){
+                                            .ObjType = 5,
+                                            .Val = (ValueObj){
+                                                .ValueType = 2,
+                                                .NPNumber = 0,
+                                            }
+                                        };
+
+                                    }
+
+
+                                    for (int index = i ; index < PackSize; index++)
+                                    {
+                                        printf("added 2\n");
+
+                                        NewPackSize++;
+                                        NewPack = realloc(NewPack, sizeof(MioneObj) * (NewPackSize));
+                                        NewPack[NewPackSize - 1] = Pack[index];
+                                    }
+
+                                    PackSize = NewPackSize;
+                                    Pack = NewPack;
+
 
 
                                     //todo function call
